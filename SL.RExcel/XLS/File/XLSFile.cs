@@ -1,0 +1,107 @@
+﻿using System.Collections.Generic;
+using System.IO;
+
+namespace SL.RExcel.XLS.File
+{
+    public class XLSFile
+    {
+        public const int MaxSectorIndex = 128;
+        private DirectoryRoot m_Dir;
+
+        public XLSFile(Stream stream)
+        {
+            try
+            {
+                var header = new XLSHeader(stream);
+                var sectors = GetSectors(stream);
+                List<SectorIndex> index = new List<SectorIndex>((int)(MaxSectorIndex * header.FatCount));
+                Set109Fats(header, sectors, index);
+                SetRemainFats(header, sectors, index);
+                SetMiniFats(header, sectors, index);
+                var dirs = SetDirs(header, sectors, index);
+                m_Dir = new DirectoryRoot(dirs, sectors, index);
+            }
+            finally
+            {
+                stream.Close();
+            }
+        }
+
+        private List<XLSDirectory> SetDirs(XLSHeader header, List<Sector> sectors, List<SectorIndex> index)
+        {
+            var dirs = new List<XLSDirectory>();
+            for (SectorIndex dirSect = header.DirStart;
+                !dirSect.IsEndOfChain;
+                dirSect = index[dirSect.ToInt()])
+            {
+                DirectorySector dir = new DirectorySector(sectors[dirSect.ToInt()].ToStorage().ToStream());
+
+                foreach (XLSDirectory entry in dir.Entries)
+                    dirs.Add(entry);
+                sectors[dirSect.ToInt()] = dir;
+            }
+            return dirs;
+        }
+
+        private static void SetMiniFats(XLSHeader header, List<Sector> sectors, List<SectorIndex> index)
+        {
+            SectorIndex miniFatSect;
+            int miniFatCount;
+            for (miniFatSect = header.MiniFatStart, miniFatCount = 0;
+                !miniFatSect.IsEndOfChain && miniFatCount < header.MiniFatCount;
+                miniFatSect = index[miniFatSect.ToInt()], ++miniFatCount)
+            {
+                MiniFatSector miniFat = new MiniFatSector(sectors[miniFatSect.ToInt()].ToStorage().ToStream());
+                sectors[miniFatSect.ToInt()] = miniFat;
+            }
+        }
+
+        private void SetRemainFats(XLSHeader header, List<Sector> sectors, List<SectorIndex> index)
+        {
+            int difCount;
+            SectorIndex difIndex;
+            for (difIndex = header.DifStart, difCount = 0;
+                !difIndex.IsEndOfChain && difCount < header.DifCount;
+                ++difCount)
+            {
+                DifSector dif = new DifSector(sectors[difIndex.ToInt()].ToStorage().ToStream());
+                sectors[difIndex.ToInt()] = dif;
+
+                foreach (var item in dif.Fats)
+                {
+                    if (!item.IsFree)
+                    {
+                        var i = item.ToInt();
+                        FatSector fat = new FatSector(sectors[i].ToStorage().ToStream());
+                        index.AddRange(fat.Fats);
+                        sectors[i] = fat;
+                    }
+                }
+            }
+        }
+
+        private void Set109Fats(XLSHeader header, List<Sector> sectors, List<SectorIndex> index)
+        {
+            foreach (var item in header.Fats)
+            {
+                var i = item.ToInt();
+                if (!item.IsFree)
+                {
+                    FatSector fat = new FatSector(sectors[i].ToStorage().ToStream());
+                    index.AddRange(fat.Fats);
+                    sectors[i] = fat;
+                }
+            }
+        }
+
+        private List<Sector> GetSectors(Stream stream)
+        {
+            var result = new List<Sector>((int)(stream.Length / Storage.StorageSize));
+            while (stream.Position < stream.Length)
+            {
+                result.Add(new Storage(stream));
+            }
+            return result;
+        }
+    }
+}
