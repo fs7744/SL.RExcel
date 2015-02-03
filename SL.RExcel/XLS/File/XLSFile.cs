@@ -6,7 +6,7 @@ namespace SL.RExcel.XLS.File
     public class XLSFile
     {
         public const int MaxSectorIndex = 128;
-        private DirectoryRoot m_Dir;
+        private XLSDirectory m_Root;
 
         public XLSFile(Stream stream)
         {
@@ -19,7 +19,7 @@ namespace SL.RExcel.XLS.File
                 SetRemainFats(header, sectors, index);
                 SetMiniFats(header, sectors, index);
                 var dirs = SetDirs(header, sectors, index);
-                m_Dir = new DirectoryRoot(dirs, sectors, index);
+                m_Root = XLSDirectoryFactory.CreateEntry(dirs, sectors, index);
             }
             finally
             {
@@ -27,16 +27,16 @@ namespace SL.RExcel.XLS.File
             }
         }
 
-        private List<XLSDirectory> SetDirs(XLSHeader header, List<Sector> sectors, List<SectorIndex> index)
+        private List<DirectorySectorData> SetDirs(XLSHeader header, List<Sector> sectors, List<SectorIndex> index)
         {
-            var dirs = new List<XLSDirectory>();
+            var dirs = new List<DirectorySectorData>();
             for (SectorIndex dirSect = header.DirStart;
                 !dirSect.IsEndOfChain;
                 dirSect = index[dirSect.ToInt()])
             {
                 DirectorySector dir = new DirectorySector(sectors[dirSect.ToInt()].ToStorage().ToStream());
 
-                foreach (XLSDirectory entry in dir.Entries)
+                foreach (DirectorySectorData entry in dir.Entries)
                     dirs.Add(entry);
                 sectors[dirSect.ToInt()] = dir;
             }
@@ -102,6 +102,15 @@ namespace SL.RExcel.XLS.File
                 result.Add(new Storage(stream));
             }
             return result;
+        }
+
+        public Stream OpenStream(string name)
+        {
+            var entry = m_Root.Find(name);
+            if (entry != null && entry is XLSStreamDirectory)
+                return new MemoryStream(((XLSStreamDirectory)entry).Data);
+
+            throw new IOException("Stream [" + name + "] was not found.");
         }
     }
 }

@@ -1,6 +1,8 @@
-﻿namespace SL.RExcel.XLS.File
+﻿using System;
+
+namespace SL.RExcel.XLS.File
 {
-    public class SectorIndex
+    public class SectorIndex : IComparable
     {
         public const uint DifSectorIndex = 0xFFFFFFFC;
         public const uint FatSectorIndex = 0xFFFFFFFD;
@@ -8,12 +10,14 @@
         public const uint FreeSectorIndex = 0xFFFFFFFF;
         public static readonly SectorIndex ZERO = new SectorIndex(0);
 
-        private uint Value { get; private set; }
+        public uint Value { get; private set; }
 
         public bool IsFree { get { return Value == FreeSectorIndex; } }
 
+        public bool IsEof { get { return Value == FreeSectorIndex; } }
+
         public bool IsEndOfChain { get { return Value == EndOfChain; } }
-        
+
         public SectorIndex(uint value)
         {
             Value = value;
@@ -32,6 +36,41 @@
         public int ToInt()
         {
             return (int)Value;
+        }
+
+        public int CompareTo(object obj)
+        {
+            return Value.CompareTo(((SectorIndex)obj).Value);
+        }
+
+        public static bool operator ==(SectorIndex l, SectorIndex r)
+        {
+            return r.Value == l.Value;
+        }
+
+        public static bool operator !=(SectorIndex l, SectorIndex r)
+        {
+            return r.Value != l.Value;
+        }
+
+        public static bool operator >(SectorIndex l, SectorIndex r)
+        {
+            return r.Value > l.Value;
+        }
+
+        public static bool operator >=(SectorIndex l, SectorIndex r)
+        {
+            return r.Value >= l.Value;
+        }
+
+        public static bool operator <(SectorIndex l, SectorIndex r)
+        {
+            return r.Value < l.Value;
+        }
+
+        public static bool operator <=(SectorIndex l, SectorIndex r)
+        {
+            return r.Value <= l.Value;
         }
     }
 }

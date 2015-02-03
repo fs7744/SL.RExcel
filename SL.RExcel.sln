@@ -3,6 +3,10 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SL.RExcel", "SL.RExcel\SL.RExcel.csproj", "{2BCC910C-0D37-4FCB-81E9-8E4D9068FD8C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{1CE0EE00-2E75-4951-937E-734A94C445AB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.Web", "Test.Web\Test.Web.csproj", "{A4AC12CD-C8EA-48CA-9FD7-703ECE2F6CA0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +17,14 @@ Global
 		{2BCC910C-0D37-4FCB-81E9-8E4D9068FD8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2BCC910C-0D37-4FCB-81E9-8E4D9068FD8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2BCC910C-0D37-4FCB-81E9-8E4D9068FD8C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1CE0EE00-2E75-4951-937E-734A94C445AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1CE0EE00-2E75-4951-937E-734A94C445AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1CE0EE00-2E75-4951-937E-734A94C445AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1CE0EE00-2E75-4951-937E-734A94C445AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4AC12CD-C8EA-48CA-9FD7-703ECE2F6CA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4AC12CD-C8EA-48CA-9FD7-703ECE2F6CA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4AC12CD-C8EA-48CA-9FD7-703ECE2F6CA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4AC12CD-C8EA-48CA-9FD7-703ECE2F6CA0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -5,18 +5,32 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.50727</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{2BCC910C-0D37-4FCB-81E9-8E4D9068FD8C}</ProjectGuid>
+    <ProjectGuid>{1CE0EE00-2E75-4951-937E-734A94C445AB}</ProjectGuid>
     <ProjectTypeGuids>{A1591282-1198-4647-A2B1-27E5FF5F6F3B};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SL.RExcel</RootNamespace>
-    <AssemblyName>SL.RExcel</AssemblyName>
+    <RootNamespace>Test</RootNamespace>
+    <AssemblyName>Test</AssemblyName>
     <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
     <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
-    <SilverlightApplication>false</SilverlightApplication>
+    <SilverlightApplication>true</SilverlightApplication>
+    <SupportedCultures>
+    </SupportedCultures>
+    <XapOutputs>true</XapOutputs>
+    <GenerateSilverlightManifest>true</GenerateSilverlightManifest>
+    <XapFilename>Test.xap</XapFilename>
+    <SilverlightManifestTemplate>Properties\AppManifest.xml</SilverlightManifestTemplate>
+    <SilverlightAppEntry>Test.App</SilverlightAppEntry>
+    <TestPageFileName>TestTestPage.html</TestPageFileName>
+    <CreateTestPage>true</CreateTestPage>
     <ValidateXaml>true</ValidateXaml>
+    <EnableOutOfBrowser>false</EnableOutOfBrowser>
+    <OutOfBrowserSettingsFile>Properties\OutOfBrowserSettings.xml</OutOfBrowserSettingsFile>
+    <UsePlatformExtensions>false</UsePlatformExtensions>
     <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
+    <LinkedServerProject>
+    </LinkedServerProject>
   </PropertyGroup>
   <!-- This property group is only here to support building this project using the 
        MSBuild 3.5 toolset. In order to work correctly with this older toolset, it needs 
@@ -52,63 +66,39 @@
     <Reference Include="System.Core">
       <HintPath>$(TargetFrameworkDirectory)System.Core.dll</HintPath>
     </Reference>
-    <Reference Include="System.Xml" />
     <Reference Include="System.Net" />
+    <Reference Include="System.Xml" />
     <Reference Include="System.Windows.Browser" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="XLSInterfaces.cs" />
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MainPage.xaml.cs">
+      <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="XLS\BIFFData.cs" />
-    <Compile Include="XLS\File\DifSector.cs" />
-    <Compile Include="XLS\File\DirectorySector.cs" />
-    <Compile Include="XLS\File\FatSector.cs" />
-    <Compile Include="XLS\File\MiniFatSector.cs" />
-    <Compile Include="XLS\File\ReaderHelper.cs" />
-    <Compile Include="XLS\File\Sector.cs" />
-    <Compile Include="XLS\File\SectorIndex.cs" />
-    <Compile Include="XLS\File\Stgty.cs" />
-    <Compile Include="XLS\File\Storage.cs" />
-    <Compile Include="XLS\File\DirectorySectorData.cs" />
-    <Compile Include="XLS\File\XLSDirectory.cs" />
-    <Compile Include="XLS\File\XLSDirectoryFactory.cs" />
-    <Compile Include="XLS\File\XLSFile.cs" />
-    <Compile Include="XLS\File\XLSHeader.cs" />
-    <Compile Include="XLS\Records\ArrayRecord.cs" />
-    <Compile Include="XLS\Records\BlankRecord.cs" />
-    <Compile Include="XLS\Records\BofRecord.cs" />
-    <Compile Include="XLS\Records\BoolErrRecord.cs" />
-    <Compile Include="XLS\Records\BoundSheetRecord.cs" />
-    <Compile Include="XLS\Records\CellRecord.cs" />
-    <Compile Include="XLS\Records\ContinueRecord.cs" />
-    <Compile Include="XLS\Records\DbCellRecord.cs" />
-    <Compile Include="XLS\Records\EofRecord.cs" />
-    <Compile Include="XLS\Records\FormulaRecord.cs" />
-    <Compile Include="XLS\Records\IndexRecord.cs" />
-    <Compile Include="XLS\Records\LabelRecord.cs" />
-    <Compile Include="XLS\Records\LabelSstRecord.cs" />
-    <Compile Include="XLS\Records\MulBlankRecord.cs" />
-    <Compile Include="XLS\Records\NumberRecord.cs" />
-    <Compile Include="XLS\Records\Record.cs" />
-    <Compile Include="XLS\Records\RowColXfCellRecord.cs" />
-    <Compile Include="XLS\Records\RowRecord.cs" />
-    <Compile Include="XLS\Records\SharedFormulaRecord.cs" />
-    <Compile Include="XLS\Records\SingleColCellRecord.cs" />
-    <Compile Include="XLS\Records\SstRecord.cs" />
-    <Compile Include="XLS\Records\StringValueRecord.cs" />
-    <Compile Include="XLS\Records\TableRecord.cs" />
-    <Compile Include="XLS\RecordType.cs" />
-    <Compile Include="XLS\XLSSheet.cs" />
-    <Compile Include="XLS\XLSWorkBook.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </ApplicationDefinition>
+    <Page Include="MainPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\AppManifest.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SL.RExcel\SL.RExcel.csproj">
+      <Project>{2bcc910c-0d37-4fcb-81e9-8e4d9068fd8c}</Project>
+      <Name>SL.RExcel</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
-  <ProjectExtensions>
-    <VisualStudio>
-      <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
-        <SilverlightProjectProperties />
-      </FlavorProperties>
-    </VisualStudio>
-  </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
@@ -116,4 +106,11 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
+        <SilverlightProjectProperties />
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>
