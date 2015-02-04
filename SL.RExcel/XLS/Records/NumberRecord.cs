@@ -4,7 +4,7 @@ namespace SL.RExcel.XLS.Records
 {
     public class NumberRecord : RowColXfCellRecord
     {
-        public double Value { get; private set; }
+        //public double Value { get; private set; }
 
         public NumberRecord(BIFFData data, Stream stream)
         {

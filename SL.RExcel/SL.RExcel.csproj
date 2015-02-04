@@ -90,6 +90,7 @@
     <Compile Include="XLS\Records\MulBlankRecord.cs" />
     <Compile Include="XLS\Records\NumberRecord.cs" />
     <Compile Include="XLS\Records\Record.cs" />
+    <Compile Include="XLS\Records\RkRecord.cs" />
     <Compile Include="XLS\Records\RowColXfCellRecord.cs" />
     <Compile Include="XLS\Records\RowRecord.cs" />
     <Compile Include="XLS\Records\SharedFormulaRecord.cs" />
@@ -98,6 +99,9 @@
     <Compile Include="XLS\Records\StringValueRecord.cs" />
     <Compile Include="XLS\Records\TableRecord.cs" />
     <Compile Include="XLS\RecordType.cs" />
+    <Compile Include="XLS\Records\SheetRecord.cs" />
+    <Compile Include="XLS\XLSCell.cs" />
+    <Compile Include="XLS\XLSRow.cs" />
     <Compile Include="XLS\XLSSheet.cs" />
     <Compile Include="XLS\XLSWorkBook.cs" />
   </ItemGroup>

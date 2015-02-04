@@ -3,6 +3,7 @@ using SL.RExcel.XLS.Records;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace SL.RExcel.XLS
 {
@@ -35,7 +36,7 @@ namespace SL.RExcel.XLS
             //m_Records.Add((ushort)RecordType.MulRk, typeof(MulRkRecord));
             m_Records.Add((ushort)RecordType.String, typeof(StringValueRecord));
             //m_Records.Add((ushort)RecordType.Xf, typeof(XfRecord));
-            //m_Records.Add((ushort)RecordType.Rk, typeof(RkRecord));
+            m_Records.Add((ushort)RecordType.Rk, typeof(RkRecord));
             m_Records.Add((ushort)RecordType.Number, typeof(NumberRecord));
             m_Records.Add((ushort)RecordType.Array, typeof(ArrayRecord));
             //m_Records.Add((ushort)RecordType.ShrFmla, typeof(SharedFormulaRecord));
@@ -50,31 +51,53 @@ namespace SL.RExcel.XLS
             m_Records = null;
         }
 
+        #region load
+
         private void Load(XLSFile file)
         {
+            List<SheetRecord> sheets = new List<SheetRecord>();
             using (var stream = GetWorkBookStream(file))
             {
-                List<Record> records = new List<Record>();
                 SstRecord sst = null;
+                SheetRecord currentSheet = null;
                 while (stream.Length - stream.Position >= BIFFData.MinSize)
                 {
                     var record = GetRecord(new BIFFData(stream), stream);
                     if (record != null)
-                    {
-                        sst = SetSST(sst, record);
-                        records.Add(record);
-                    }
+                        GetSheetRecords(sheets, ref sst, ref currentSheet, record);
                 }
+                sheets.ForEach(i => i.SST = sst);
             }
+
+            if (sheets.Count > 0)
+                GetSheets(sheets);
         }
 
-        private SstRecord SetSST(SstRecord sst, Record record)
+        private void GetSheets(List<SheetRecord> sheets)
+        {
+            Worksheets = sheets.Select(i => new XLSSheet(i)).ToArray();
+        }
+
+        private static void GetSheetRecords(List<SheetRecord> sheets, ref SstRecord sst, ref SheetRecord currentSheet, Record record)
         {
             if (record is SstRecord)
                 sst = record as SstRecord;
-            else if (record is LabelSstRecord && sst != null)
-                ((LabelSstRecord)record).SetValue(sst);
-            return sst;
+            else if (record is BoundSheetRecord)
+                sheets.Add(new SheetRecord() { Sheet = record as BoundSheetRecord });
+            else if (record is IndexRecord)
+            {
+                currentSheet = sheets.FirstOrDefault(i => i.Index == null);
+                if (currentSheet != null)
+                    currentSheet.Index = record as IndexRecord;
+            }
+            else if (record is RowRecord && currentSheet != null)
+            {
+                currentSheet.Rows.Add(record as RowRecord);
+            }
+            else if (record is CellRecord && currentSheet != null)
+            {
+                currentSheet.Cells.Add(record as CellRecord);
+            }
         }
 
         private Record GetRecord(BIFFData data, Stream stream)
@@ -96,19 +119,21 @@ namespace SL.RExcel.XLS
             }
         }
 
+        #endregion load
+
         public IWorksheet GetSheetByName(string name)
         {
-            throw new NotImplementedException();
+            return Worksheets.FirstOrDefault(i => i.Name == name);
         }
 
         public IWorksheet GetSheetByIndex(int index)
         {
-            throw new NotImplementedException();
+            return Worksheets[index];
         }
 
-        public System.Collections.Generic.IEnumerable<string> GetAllSheetNames()
+        public IEnumerable<string> GetAllSheetNames()
         {
-            throw new NotImplementedException();
+            return Worksheets.Select(i => i.Name);
         }
     }
 }

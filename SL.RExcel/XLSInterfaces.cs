@@ -19,21 +19,23 @@ namespace SL.RExcel
     {
         string Name { get; }
 
-        IRow[] Rows { get; }
+        IDictionary<uint, IRow> Rows { get; }
 
         uint FirstRow { get; }
 
         uint LastRow { get; }
 
-        uint FirstCol { get; }
+        //uint FirstCol { get; }
 
-        uint LastCol { get; }
+        //uint LastCol { get; }
 
         IRow GetRow(uint index);
     }
 
     public interface IRow
     {
+        IDictionary<uint, ICell> Cells { get; }
+
         bool IsEmpty();
 
         ICell GetCell(uint index);

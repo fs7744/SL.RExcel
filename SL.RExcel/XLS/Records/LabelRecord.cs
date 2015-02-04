@@ -5,7 +5,7 @@ namespace SL.RExcel.XLS.Records
 {
     public class LabelRecord : RowColXfCellRecord
     {
-        public string Value { get; private set; }
+        //public string Value { get; private set; }
 
         public LabelRecord(BIFFData data, Stream stream)
         {

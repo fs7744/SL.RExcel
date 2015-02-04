@@ -4,7 +4,7 @@ namespace SL.RExcel.XLS.Records
 {
     public class LabelSstRecord : RowColXfCellRecord
     {
-        public string Value { get; private set; }
+        //public string Value { get; private set; }
 
         public uint SSTIndex { get; private set; }
 

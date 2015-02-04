@@ -4,7 +4,7 @@ namespace SL.RExcel.XLS.Records
 {
     public class BoolErrRecord : RowColXfCellRecord
     {
-        public object Value { get; private set; }
+        //public object Value { get; private set; }
 
         public bool Error { get; private set; }
 

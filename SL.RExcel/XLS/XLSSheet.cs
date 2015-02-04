@@ -1,5 +1,4 @@
 ﻿using SL.RExcel.XLS.Records;
-using System;
 using System.Collections.Generic;
 
 namespace SL.RExcel.XLS
@@ -8,39 +7,33 @@ namespace SL.RExcel.XLS
     {
         public string Name { get; private set; }
 
-        public IRow[] Rows
-        {
-            get { throw new NotImplementedException(); }
-        }
+        public IDictionary<uint, IRow> Rows { get; private set; }
 
-        public uint FirstRow
-        {
-            get { throw new NotImplementedException(); }
-        }
+        public uint FirstRow { get; private set; }
 
-        public uint LastRow
-        {
-            get { throw new NotImplementedException(); }
-        }
+        public uint LastRow { get; private set; }
 
-        public uint FirstCol
-        {
-            get { throw new NotImplementedException(); }
-        }
+        //public uint FirstCol { get; private set; }
 
-        public uint LastCol
-        {
-            get { throw new NotImplementedException(); }
-        }
+        //public uint LastCol { get; private set; }
 
-        public XLSSheet(BoundSheetRecord record, List<Record> allRecords)
+        public XLSSheet(SheetRecord record)
         {
-            Name = record.Name;
+            Name = record.Sheet.Name;
+            FirstRow = record.Index.FirstRow;
+            LastRow = record.Index.LastRow;
+            Rows = new Dictionary<uint, IRow>();
+            foreach (var item in record.Rows)
+            {
+                Rows.Add(item.RowNumber, new XLSRow(item, record));
+            }
         }
 
         public IRow GetRow(uint index)
         {
-            throw new NotImplementedException();
+            IRow result = null;
+            Rows.TryGetValue(index, out result);
+            return result;
         }
     }
 }
