@@ -87,7 +87,11 @@
     <Compile Include="XLS\Records\IndexRecord.cs" />
     <Compile Include="XLS\Records\LabelRecord.cs" />
     <Compile Include="XLS\Records\LabelSstRecord.cs" />
+    <Compile Include="XLS\Records\MergeCell.cs" />
+    <Compile Include="XLS\Records\MergedCellsRecord.cs" />
     <Compile Include="XLS\Records\MulBlankRecord.cs" />
+    <Compile Include="XLS\Records\MulRkRecord.cs" />
+    <Compile Include="XLS\Records\MultipleColCellRecord.cs" />
     <Compile Include="XLS\Records\NumberRecord.cs" />
     <Compile Include="XLS\Records\Record.cs" />
     <Compile Include="XLS\Records\RkRecord.cs" />

@@ -8,6 +8,11 @@ namespace SL.RExcel.XLS
     {
         public IDictionary<uint, ICell> Cells { get; private set; }
 
+        public XLSRow()
+        {
+            Cells = new Dictionary<uint, ICell>();
+        }
+
         public XLSRow(RowRecord record, SheetRecord sheet)
         {
             Cells = new Dictionary<uint, ICell>();
@@ -18,10 +23,30 @@ namespace SL.RExcel.XLS
                     (cell as LabelSstRecord).SetValue(sheet.SST);
                 }
 
-                if (cell is SingleColCellRecord)
-                {
-                    Cells.Add((cell as SingleColCellRecord).Col, new XLSCell(cell));
-                }
+                AddCell(cell);
+            }
+        }
+
+        private void AddCell(CellRecord cell)
+        {
+            if (cell is SingleColCellRecord)
+            {
+                Cells.Add((cell as SingleColCellRecord).Col, new XLSCell(cell.Value));
+            }
+            else if (cell is MultipleColCellRecord)
+            {
+                AddMultipleCell(cell);
+            }
+        }
+
+        private void AddMultipleCell(CellRecord cell)
+        {
+            var cells = cell as MultipleColCellRecord;
+            for (ushort i = cells.FirstCol; i <= cells.LastCol; ++i)
+            {
+                object val = cells.GetValue(i);
+                if (val != null)
+                    Cells.Add(i, new XLSCell(val));
             }
         }
 

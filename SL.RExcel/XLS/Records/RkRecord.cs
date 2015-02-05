@@ -12,7 +12,7 @@ namespace SL.RExcel.XLS.Records
             Value = Convet(reader.ReadInt32());
         }
 
-        public double Convet(int rk)
+        public static double Convet(int rk)
         {
             var result = 0.0;
 
@@ -36,7 +36,7 @@ namespace SL.RExcel.XLS.Records
             return result;
         }
 
-        private double ToDouble(int n)
+        private static double ToDouble(int n)
         {
             byte[] doubleBytes = new byte[8];
             byte[] uintBytes = BitConverter.GetBytes(n);

@@ -4,9 +4,9 @@ namespace SL.RExcel.XLS
 {
     public class XLSCell : ICell
     {
-        public XLSCell(CellRecord cell)
+        public XLSCell(object value)
         {
-            Value = cell.Value;
+            Value = value;
         }
 
         public object Value { get; private set; }

@@ -8,6 +8,7 @@ namespace SL.RExcel.XLS.Records
         {
             Cells = new List<CellRecord>();
             Rows = new List<RowRecord>();
+            MergeCells = new List<MergeCellsRecord>();
         }
 
         public SstRecord SST { get; set; }
@@ -19,5 +20,7 @@ namespace SL.RExcel.XLS.Records
         public List<CellRecord> Cells { get; set; }
 
         public List<RowRecord> Rows { get; set; }
+
+        public List<MergeCellsRecord> MergeCells { get; set; }
     }
 }

@@ -27,13 +27,13 @@ namespace SL.RExcel.XLS
             m_Records.Add((ushort)RecordType.DbCell, typeof(DbCellRecord));
             m_Records.Add((ushort)RecordType.Row, typeof(RowRecord));
             //m_Records.Add((ushort)RecordType.Continue, typeof(ContinueRecord));
-            m_Records.Add((ushort)RecordType.Blank, typeof(BlankRecord));
+            //m_Records.Add((ushort)RecordType.Blank, typeof(BlankRecord));
             m_Records.Add((ushort)RecordType.BoolErr, typeof(BoolErrRecord));
             //m_Records.Add((ushort)RecordType.Formula, typeof(FormulaRecord));
             m_Records.Add((ushort)RecordType.Label, typeof(LabelRecord));
             m_Records.Add((ushort)RecordType.LabelSst, typeof(LabelSstRecord));
             //m_Records.Add((ushort)RecordType.MulBlank, typeof(MulBlankRecord));
-            //m_Records.Add((ushort)RecordType.MulRk, typeof(MulRkRecord));
+            m_Records.Add((ushort)RecordType.MulRk, typeof(MulRkRecord));
             m_Records.Add((ushort)RecordType.String, typeof(StringValueRecord));
             //m_Records.Add((ushort)RecordType.Xf, typeof(XfRecord));
             m_Records.Add((ushort)RecordType.Rk, typeof(RkRecord));
@@ -47,6 +47,7 @@ namespace SL.RExcel.XLS
             //m_Records.Add((ushort)RecordType.Format, typeof(FormatRecord));
             //m_Records.Add((ushort)RecordType.Palette, typeof(PaletteRecord));
             //m_Records.Add((ushort)RecordType.Hyperlink, typeof(HyperLinkRecord));
+            m_Records.Add((ushort)RecordType.MergeCells, typeof(MergeCellsRecord));
             Load(new XLSFile(stream));
             m_Records = null;
         }
@@ -97,6 +98,10 @@ namespace SL.RExcel.XLS
             else if (record is CellRecord && currentSheet != null)
             {
                 currentSheet.Cells.Add(record as CellRecord);
+            }
+            else if (record is MergeCellsRecord && currentSheet != null)
+            {
+                currentSheet.MergeCells.Add(record as MergeCellsRecord);
             }
         }
 

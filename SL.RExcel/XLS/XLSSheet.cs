@@ -27,6 +27,53 @@ namespace SL.RExcel.XLS
             {
                 Rows.Add(item.RowNumber, new XLSRow(item, record));
             }
+            foreach (var mergeCells in record.MergeCells)
+            {
+                foreach (var mergeCell in mergeCells.MergeCells)
+                {
+                    var value = GetFirstMergeCellValue(mergeCell);
+                    if (value != null)
+                        SetMergeCellValue(mergeCell, value);
+                }
+            }
+        }
+
+        private void SetMergeCellValue(MergeCell mergeCell, object value)
+        {
+            for (uint i = mergeCell.FirstRow; i <= mergeCell.LastRow; i++)
+            {
+                IRow row = null;
+                if (!Rows.TryGetValue(i, out row))
+                    Rows.Add(i, new XLSRow());
+                for (uint j = mergeCell.FirstCol; j <= mergeCell.LastCol; j++)
+                {
+                    ICell cell = null;
+                    if (!row.Cells.TryGetValue(j, out cell))
+                    {
+                        cell = new XLSCell(value);
+                        row.Cells.Add(j, cell);
+                    }
+                }
+            }
+        }
+
+        private object GetFirstMergeCellValue(MergeCell mergeCell)
+        {
+            for (uint i = mergeCell.FirstRow; i <= mergeCell.LastRow; i++)
+            {
+                IRow row = null;
+                if (!Rows.TryGetValue(i, out row))
+                    continue;
+                for (uint j = mergeCell.FirstCol; j <= mergeCell.LastCol; j++)
+                {
+                    ICell cell = null;
+                    if (!row.Cells.TryGetValue(j, out cell) || cell.Value == null)
+                        continue;
+                    else
+                        return cell.Value;
+                }
+            }
+            return null;
         }
 
         public IRow GetRow(uint index)

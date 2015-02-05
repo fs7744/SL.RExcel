@@ -52,5 +52,7 @@
         Palette = 0x0092,
 
         Hyperlink = 0x01B8,
+
+        MergeCells = 0xe5
     }
 }
