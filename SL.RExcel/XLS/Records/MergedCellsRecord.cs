@@ -14,7 +14,7 @@ namespace SL.RExcel.XLS.Records
             MergeCells = new List<MergeCell>();
             for (int i = 0; i < count; i++)
             {
-                MergeCells.Add( new MergeCell()
+                MergeCells.Add(new MergeCell()
                 {
                     FirstRow = reader.ReadUInt16(),
                     LastRow = reader.ReadUInt16(),

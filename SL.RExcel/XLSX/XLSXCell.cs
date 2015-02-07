@@ -1,8 +1,8 @@
-﻿namespace SL.RExcel.XLS
+﻿namespace SL.RExcel.XLSX
 {
-    public class XLSCell : ICell
+    public class XLSXCell : ICell
     {
-        public XLSCell(object value)
+        public XLSXCell(object value)
         {
             Value = value;
         }
