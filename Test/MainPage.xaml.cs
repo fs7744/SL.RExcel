@@ -1,4 +1,5 @@
-﻿using SL.RExcel.XLS;
+﻿using SL.RExcel;
+using SL.RExcel.XLS;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -17,7 +18,7 @@ namespace Test
             a.Filter = "(*.xls)|*.xls|(*.xlsx)|*.xlsx";
             if (a.ShowDialog() == true)
             {
-                new XLSWorkBook(a.File.OpenRead());
+                ExcelHelper.Open(a.File.OpenRead());
             }
         }
     }

@@ -10,21 +10,15 @@ namespace SL.RExcel.XLS.File
 
         public XLSFile(Stream stream)
         {
-            try
-            {
-                var header = new XLSHeader(stream);
-                var sectors = GetSectors(stream);
-                List<SectorIndex> index = new List<SectorIndex>((int)(MaxSectorIndex * header.FatCount));
-                Set109Fats(header, sectors, index);
-                SetRemainFats(header, sectors, index);
-                SetMiniFats(header, sectors, index);
-                var dirs = SetDirs(header, sectors, index);
-                m_Root = XLSDirectoryFactory.CreateEntry(dirs, sectors, index);
-            }
-            finally
-            {
-                stream.Close();
-            }
+            var header = new XLSHeader(stream);
+            var sectors = GetSectors(stream);
+            List<SectorIndex> index = new List<SectorIndex>((int)(MaxSectorIndex * header.FatCount));
+            Set109Fats(header, sectors, index);
+            SetRemainFats(header, sectors, index);
+            SetMiniFats(header, sectors, index);
+            var dirs = SetDirs(header, sectors, index);
+            m_Root = XLSDirectoryFactory.CreateEntry(dirs, sectors, index);
+            stream.Close();
         }
 
         private List<DirectorySectorData> SetDirs(XLSHeader header, List<Sector> sectors, List<SectorIndex> index)

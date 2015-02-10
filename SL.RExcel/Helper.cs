@@ -15,7 +15,7 @@ namespace SL.RExcel
 
         public static bool IsEmpty<T>(this IEnumerable<T> list)
         {
-            return list != null && list.GetEnumerator().MoveNext();
+            return list == null || !list.GetEnumerator().MoveNext();
         }
 
         public static bool EqualsIgnoreCase(this string str, string value)

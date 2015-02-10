@@ -47,7 +47,7 @@ namespace SL.RExcel.XLS.File
         {
             BinaryReader reader = new BinaryReader(stream);
             CheckFormart(reader.ReadUInt64());
-
+            
             ID = new Guid(reader.ReadBytes(16));
             MinorVer = reader.ReadUInt16();
             DllVer = reader.ReadUInt16();
@@ -75,7 +75,7 @@ namespace SL.RExcel.XLS.File
         private void CheckFormart(ulong sign)
         {
             if (sign != MagicNumber)
-                throw new Exception("Invalid header MagicNumber.");
+                throw new NotSupportedException("Invalid header MagicNumber.");
         }
     }
 }
