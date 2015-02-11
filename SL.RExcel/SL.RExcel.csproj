@@ -120,6 +120,11 @@
     <Compile Include="XLS\XLSRow.cs" />
     <Compile Include="XLS\XLSSheet.cs" />
     <Compile Include="XLS\XLSWorkBook.cs" />
+    <Compile Include="XML\XMLCell.cs" />
+    <Compile Include="XML\XMLCommon.cs" />
+    <Compile Include="XML\XMLRow.cs" />
+    <Compile Include="XML\XMLWorkBook.cs" />
+    <Compile Include="XML\XMLWorksheet.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

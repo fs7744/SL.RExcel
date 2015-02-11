@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -15,10 +16,25 @@ namespace SL.RExcel.XLSX
 
         public XLSXWorkBook(Stream stream)
         {
-            UnZipper unzip;
-            unzip = new UnZipper(stream);
-            var fileNames = unzip.GetFileNamesInZip().ToList();
-            Worksheets = GetSheetList(unzip, fileNames);
+            stream.Position = 0L;
+            var unZipper = GetUnZipper(stream);
+            var fileNames = unZipper.GetFileNamesInZip().ToList();
+            Worksheets = GetSheetList(unZipper, fileNames);
+            stream.Close();
+        }
+
+        private UnZipper GetUnZipper(Stream stream)
+        {
+            UnZipper result = null;
+            try
+            {
+                result = new UnZipper(stream);
+            }
+            catch (Exception ex)
+            {
+                throw new NotSupportedException("It is not xlsx file.", ex);
+            }
+            return result;
         }
 
         private IWorksheet[] GetSheetList(UnZipper unzip, List<string> fileNames)

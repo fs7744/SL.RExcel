@@ -20,6 +20,7 @@ namespace SL.RExcel.XLS
 
         public XLSWorkBook(Stream stream)
         {
+            stream.Position = 0L;
             m_Records = new Dictionary<ushort, Type>();
             //m_Records.Add((ushort)RecordType.Bof, typeof(BofRecord));
             m_Records.Add((ushort)RecordType.Boundsheet, typeof(BoundSheetRecord));

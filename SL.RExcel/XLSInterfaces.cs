@@ -45,6 +45,6 @@ namespace SL.RExcel
     {
         object Value { get; }
 
-        string GetFormattedValue();
+        string GetStringValue();
     }
 }

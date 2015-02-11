@@ -9,7 +9,7 @@
 
         public object Value { get; private set; }
 
-        public string GetFormattedValue()
+        public string GetStringValue()
         {
             return Value.ToString();
         }

@@ -1,5 +1,4 @@
 ﻿using SL.RExcel;
-using SL.RExcel.XLS;
 using System.Windows;
 using System.Windows.Controls;
 
