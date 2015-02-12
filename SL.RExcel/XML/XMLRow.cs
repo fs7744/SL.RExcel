@@ -61,5 +61,10 @@ namespace SL.RExcel.XML
         {
             return Cells.Values.Select(i => (XMLCell)i).Where(i => i.MergeDown > 0);
         }
+
+        public IEnumerable<KeyValuePair<uint, ICell>> GetAllCells()
+        {
+            return Cells.OrderBy(i => i.Key);
+        }
     }
 }

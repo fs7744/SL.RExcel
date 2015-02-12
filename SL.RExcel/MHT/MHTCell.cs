@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+using System.Windows.Browser;
 
 namespace SL.RExcel.MHT
 {
@@ -9,22 +10,29 @@ namespace SL.RExcel.MHT
         public static readonly Regex ValueReg = new Regex(">.+?</td>", RegexOptions.IgnoreCase);
         public static readonly Regex RowSpanReg = new Regex("rowspan=.+? ", RegexOptions.IgnoreCase);
         public static readonly Regex ColSpanReg = new Regex("colspan=.+? ", RegexOptions.IgnoreCase);
+        public static readonly Regex SpanReg = new Regex("<span.+?>", RegexOptions.IgnoreCase);
 
         public MHTCell(uint index, string element)
         {
             Index = index;
             if (!string.IsNullOrWhiteSpace(element))
             {
-                Value = GetValue(element, ValueReg, ">", "</td");
-                ColSpan = ToUint(GetValue(element, ColSpanReg, "colspan=", " "));
-                RowSpan = ToUint(GetValue(element, RowSpanReg, "rowspan=", " "));
+                var value = HtmlDecode(GetValue(element, ValueReg));
+                Value = value.Replaces(GetValue(value, SpanReg), "</span>", "</td>", ">", Multipart.SignBlank);
+                ColSpan = ToUint(GetValue(element, ColSpanReg).Replaces("colspan=", " "));
+                RowSpan = ToUint(GetValue(element, RowSpanReg).Replaces("rowspan=", " "));
             }
         }
 
-        private string GetValue(string element, Regex reg, string begin, string end)
+        private string HtmlDecode(string value)
+        {
+            return string.IsNullOrWhiteSpace(value) ? value : HttpUtility.HtmlDecode(value);
+        }
+
+        private string GetValue(string element, Regex reg)
         {
             var match = reg.Match(element);
-            return match.Success ? match.Value.Replace(begin, string.Empty).Replace(end, string.Empty) : string.Empty;
+            return match.Success ? match.Value : string.Empty;
         }
 
         private uint ToUint(string value)

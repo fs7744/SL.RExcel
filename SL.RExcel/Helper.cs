@@ -72,7 +72,18 @@ namespace SL.RExcel
 
         public static bool IsNotEnd(this StreamReader reader)
         {
-            return reader.BaseStream.Position < reader.BaseStream.Length;
+            return !reader.EndOfStream;
+        }
+
+        public static string Replaces(this string element, params string[] replaces)
+        {
+            if (string.IsNullOrEmpty(element)) return element;
+            var result = element;
+            foreach (var item in (replaces ?? new string[1]).Where(i => !string.IsNullOrEmpty(i)))
+            {
+                result = result.Replace(item, string.Empty);
+            }
+            return result;
         }
     }
 }

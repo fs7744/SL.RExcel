@@ -137,5 +137,10 @@ namespace SL.RExcel.XLSX
             Rows.TryGetValue(index, out result);
             return result;
         }
+
+        public IEnumerable<KeyValuePair<uint, IRow>> GetAllRows()
+        {
+            return Rows.OrderBy(i => i.Key);
+        }
     }
 }

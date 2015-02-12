@@ -29,6 +29,7 @@ namespace SL.RExcel.MHT
 
         public void AddCells(string row)
         {
+            if (string.IsNullOrWhiteSpace(row)) return;
             uint index = Cells.Keys.IsEmpty() ? 0 : Cells.Keys.Max() + 1;
             foreach (Match cellx in TdReg.Matches(row))
             {
@@ -63,6 +64,11 @@ namespace SL.RExcel.MHT
         {
             if (!Cells.ContainsKey(cell.Index))
                 Cells.Add(cell.Index, cell);
+        }
+
+        public IEnumerable<KeyValuePair<uint, ICell>> GetAllCells()
+        {
+            return Cells.OrderBy(i => i.Key);
         }
     }
 }

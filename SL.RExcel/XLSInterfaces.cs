@@ -30,6 +30,8 @@ namespace SL.RExcel
         //uint LastCol { get; }
 
         IRow GetRow(uint index);
+
+        IEnumerable<KeyValuePair<uint, IRow>> GetAllRows();
     }
 
     public interface IRow
@@ -39,6 +41,8 @@ namespace SL.RExcel
         bool IsEmpty();
 
         ICell GetCell(uint index);
+
+        IEnumerable<KeyValuePair<uint, ICell>> GetAllCells();
     }
 
     public interface ICell

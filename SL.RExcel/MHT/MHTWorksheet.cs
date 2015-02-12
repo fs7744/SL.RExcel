@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace SL.RExcel.MHT
@@ -22,6 +23,7 @@ namespace SL.RExcel.MHT
             Name = name;
             Rows = new Dictionary<uint, IRow>();
             var element = GetXML(part);
+            if (string.IsNullOrWhiteSpace(element)) return;
             uint index = 0;
             foreach (Match xrow in new Regex(TrReg, RegexOptions.IgnoreCase).Matches(element))
             {
@@ -67,6 +69,11 @@ namespace SL.RExcel.MHT
             IRow result = null;
             Rows.TryGetValue(index, out result);
             return result;
+        }
+
+        public IEnumerable<KeyValuePair<uint, IRow>> GetAllRows()
+        {
+            return Rows.OrderBy(i => i.Key);
         }
     }
 }

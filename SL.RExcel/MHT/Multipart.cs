@@ -10,6 +10,8 @@ namespace SL.RExcel.MHT
         public const string NextPart = "NextPart";
         public const string Sign3D = "=3D";
         public const string SignEqual = "=";
+        public const string SignBlank = @"&#12288;";
+   
         public const string ContentLocation = "Content-Location: ";
         public const string ContentTransferEncoding = "Content-Transfer-Encoding: ";
         public const string ContentType = "Content-Type: ";

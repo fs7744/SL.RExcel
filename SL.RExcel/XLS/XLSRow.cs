@@ -61,5 +61,10 @@ namespace SL.RExcel.XLS
             Cells.TryGetValue(index, out result);
             return result;
         }
+
+        public IEnumerable<KeyValuePair<uint, ICell>> GetAllCells()
+        {
+            return Cells.OrderBy(i => i.Key);
+        }
     }
 }

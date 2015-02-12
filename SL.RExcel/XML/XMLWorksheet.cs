@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
 
 namespace SL.RExcel.XML
@@ -55,6 +56,11 @@ namespace SL.RExcel.XML
             IRow result = null;
             Rows.TryGetValue(index, out result);
             return result;
+        }
+
+        public IEnumerable<KeyValuePair<uint, IRow>> GetAllRows()
+        {
+            return Rows.OrderBy(i => i.Key);
         }
     }
 }

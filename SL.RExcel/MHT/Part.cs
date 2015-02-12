@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Text;
 
+
 namespace SL.RExcel.MHT
 {
     public class Part
@@ -24,7 +25,11 @@ namespace SL.RExcel.MHT
                 var line = reader.NextFullLine();
                 if (line.Contains(Multipart.NextPart))
                     break;
-                m_SB.Append(line.Replace(Multipart.Sign3D, Multipart.SignEqual));
+                line = !string.IsNullOrWhiteSpace(line) && line.EndsWith("=")
+                    ? line.Remove(line.Length - 1) : line;
+                line = line.Replace(Multipart.Sign3D, Multipart.SignEqual);
+                line = line.Replace(Multipart.SignBlank, string.Empty);
+                m_SB.Append(line);
             }
         }
 

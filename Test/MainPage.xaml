@@ -6,7 +6,11 @@
     mc:Ignorable="d"
     d:DesignHeight="300" d:DesignWidth="400">
 
-    <StackPanel>
-        <Button Content="Open xls/xlsx" Click="Button_Click_1" />
-    </StackPanel>
+    <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                 ScrollViewer.VerticalScrollBarVisibility="Auto">
+        <StackPanel  Margin="10,10,10,10">
+            <Button Content="Open excel" Click="btnOpen_Click" />
+            <TextBox x:Name="txtShow" AcceptsReturn="True" MinHeight="600" />
+        </StackPanel>
+    </ScrollViewer>
 </UserControl>

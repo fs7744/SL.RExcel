@@ -1,5 +1,6 @@
 ﻿using SL.RExcel.XLS.Records;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SL.RExcel.XLS
 {
@@ -106,6 +107,11 @@ namespace SL.RExcel.XLS
             IRow result = null;
             Rows.TryGetValue(index, out result);
             return result;
+        }
+
+        public IEnumerable<KeyValuePair<uint, IRow>> GetAllRows()
+        {
+            return Rows.OrderBy(i => i.Key);
         }
     }
 }
