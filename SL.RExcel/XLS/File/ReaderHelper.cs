@@ -24,15 +24,25 @@ namespace SL.RExcel.XLS.File
 
         public static string ConvertFromUtf32(int utf32)
         {
-            if (utf32 < 0 || utf32 > 0x10FFFF)
-                throw new ArgumentOutOfRangeException("utf32", "The argument must be from 0 to 0x10FFFF.");
-            if (0xD800 <= utf32 && utf32 <= 0xDFFF)
-                throw new ArgumentOutOfRangeException("utf32", "The argument must not be in surrogate pair range.");
+            CheckUTF32(utf32);
             if (utf32 < 0x10000)
                 return new string((char)utf32, 1);
             utf32 -= 0x10000;
             return new string(new[] {(char) ((utf32 >> 10) + 0xD800),
                                 (char) (utf32 % 0x0400 + 0xDC00)});
+        }
+
+        private static void CheckUTF32(int utf32)
+        {
+            if (utf32 < 0 || utf32 > 0x10FFFF)
+                throw new ArgumentOutOfRangeException("utf32", "The argument must be from 0 to 0x10FFFF.");
+            CheckSurrogatePairRange(utf32);
+        }
+
+        private static void CheckSurrogatePairRange(int utf32)
+        {
+            if (0xD800 <= utf32 && utf32 <= 0xDFFF)
+                throw new ArgumentOutOfRangeException("utf32", "The argument must not be in surrogate pair range.");
         }
 
         public static string ReadPossibleCompressedString(this BinaryReader reader, int length)

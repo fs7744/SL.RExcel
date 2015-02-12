@@ -27,6 +27,11 @@ namespace SL.RExcel.XLS
             {
                 Rows.Add(item.RowNumber, new XLSRow(item, record));
             }
+            HandleMergeCells(record);
+        }
+
+        private void HandleMergeCells(SheetRecord record)
+        {
             foreach (var mergeCells in record.MergeCells)
             {
                 foreach (var mergeCell in mergeCells.MergeCells)
@@ -42,9 +47,7 @@ namespace SL.RExcel.XLS
         {
             for (uint i = mergeCell.FirstRow; i <= mergeCell.LastRow; i++)
             {
-                IRow row = null;
-                if (!Rows.TryGetValue(i, out row))
-                    Rows.Add(i, new XLSRow());
+                IRow row = GetXLSRow(i);
                 for (uint j = mergeCell.FirstCol; j <= mergeCell.LastCol; j++)
                 {
                     ICell cell = null;
@@ -57,23 +60,45 @@ namespace SL.RExcel.XLS
             }
         }
 
+        private IRow GetXLSRow(uint i)
+        {
+            IRow row = null;
+            if (!Rows.TryGetValue(i, out row))
+            {
+                row = new XLSRow();
+                Rows.Add(i, row);
+            }
+            return row;
+        }
+
         private object GetFirstMergeCellValue(MergeCell mergeCell)
         {
+            object result = null;
             for (uint i = mergeCell.FirstRow; i <= mergeCell.LastRow; i++)
             {
                 IRow row = null;
                 if (!Rows.TryGetValue(i, out row))
                     continue;
-                for (uint j = mergeCell.FirstCol; j <= mergeCell.LastCol; j++)
-                {
-                    ICell cell = null;
-                    if (!row.Cells.TryGetValue(j, out cell) || cell.Value == null)
-                        continue;
-                    else
-                        return cell.Value;
-                }
+                result = GetFirstMergeCellValue(mergeCell, row);
+                if (result != null)
+                    break;
             }
-            return null;
+            return result;
+        }
+
+        private object GetFirstMergeCellValue(MergeCell mergeCell, IRow row)
+        {
+            object result = null;
+            for (uint j = mergeCell.FirstCol; j <= mergeCell.LastCol; j++)
+            {
+                ICell cell = null;
+                result = !row.Cells.TryGetValue(j, out cell) || cell.Value == null
+                    ? null : result;
+
+                if (result != null)
+                    break;
+            }
+            return result;
         }
 
         public IRow GetRow(uint index)

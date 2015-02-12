@@ -28,10 +28,7 @@ namespace SL.RExcel.XLS.Records
             else
             {
                 rk = rk >> 2;
-                if (div100)
-                    result = rk / 100.0;
-                else
-                    result = rk;
+                result = div100 ? (rk / 100.0) : rk;
             }
             return result;
         }

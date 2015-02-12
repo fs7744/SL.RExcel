@@ -84,21 +84,31 @@ namespace SL.RExcel.XLSX
 
         private object GetFirstMergeCellValue(MergeCell mergeCell)
         {
+            object result = null;
             for (uint i = mergeCell.FirstRow; i <= mergeCell.LastRow; i++)
             {
                 IRow row = null;
                 if (!Rows.TryGetValue(i, out row))
                     continue;
-                for (uint j = mergeCell.FirstCol; j <= mergeCell.LastCol; j++)
-                {
-                    ICell cell = null;
-                    if (!row.Cells.TryGetValue(j, out cell) || cell.Value == null)
-                        continue;
-                    else
-                        return cell.Value;
-                }
+                result = GetFirstMergeCellValue(mergeCell, row);
+                if (result != null)
+                    break;
             }
-            return null;
+            return result;
+        }
+
+        private object GetFirstMergeCellValue(MergeCell mergeCell, IRow row)
+        {
+            object result = null;
+            for (uint j = mergeCell.FirstCol; j <= mergeCell.LastCol; j++)
+            {
+                ICell cell = null;
+                result = !row.Cells.TryGetValue(j, out cell) || cell.Value == null
+                    ? null : cell.Value;
+                if (result != null)
+                    break;
+            }
+            return result;
         }
 
         private static List<MergeCell> GetMergeCells(XElement element)

@@ -21,10 +21,8 @@ namespace SL.RExcel.XLSX
                 {
                     var value = cell.Element(XLSXCommon.ExcelNamespace + XLSXCommon.XML_V).Value;
                     var t = cell.Attribute(XLSXCommon.XML_T);
-                    if (t != null && t.Value == XLSXCommon.XML_S)
-                    {
-                        value = sharedStrings[value];
-                    }
+                    value = t != null && t.Value == XLSXCommon.XML_S
+                        ? value = sharedStrings[value] : value;
 
                     Cells.Add((uint)index[0], new XLSXCell(value));
                 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace SL.RExcel.XLS.File
 {
@@ -61,15 +62,12 @@ namespace SL.RExcel.XLS.File
                 DifSector dif = new DifSector(sectors[difIndex.ToInt()].ToStorage().ToStream());
                 sectors[difIndex.ToInt()] = dif;
 
-                foreach (var item in dif.Fats)
+                foreach (var item in dif.Fats.Where(i => !i.IsFree))
                 {
-                    if (!item.IsFree)
-                    {
-                        var i = item.ToInt();
-                        FatSector fat = new FatSector(sectors[i].ToStorage().ToStream());
-                        index.AddRange(fat.Fats);
-                        sectors[i] = fat;
-                    }
+                    var i = item.ToInt();
+                    FatSector fat = new FatSector(sectors[i].ToStorage().ToStream());
+                    index.AddRange(fat.Fats);
+                    sectors[i] = fat;
                 }
             }
         }

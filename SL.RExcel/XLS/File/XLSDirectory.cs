@@ -35,22 +35,14 @@ namespace SL.RExcel.XLS.File
 
         private XLSDirectory GetNext(int c, XLSDirectory child)
         {
-            XLSDirectory result = null;
-            if (c < 0)
-                result = child.LeftSibling;
-            else if (c > 0)
-                result = child.RightSibling;
-            return result;
+            return c < 0 ? child.LeftSibling
+                : (c > 0 ? child.RightSibling : null);
         }
 
         private int Compare(string l, string r)
         {
-            if (l.Length < r.Length)
-                return -1;
-            else if (l.Length > r.Length)
-                return 1;
-            else
-                return string.Compare(l, r, StringComparison.OrdinalIgnoreCase);
+            return l.Length < r.Length ? -1
+                : (l.Length > r.Length ? 1 : string.Compare(l, r, StringComparison.OrdinalIgnoreCase));
         }
     }
 
@@ -100,7 +92,7 @@ namespace SL.RExcel.XLS.File
 
                         sect = index[sect.ToInt()];
                     }
-                    catch (Exception err)
+                    catch (Exception)
                     {
                         return;
                     }

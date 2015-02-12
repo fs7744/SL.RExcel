@@ -1,10 +1,21 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 
 namespace SL.RExcel.XLS.Records
 {
     public class BoolErrRecord : RowColXfCellRecord
     {
-        //public object Value { get; private set; }
+        public static readonly Dictionary<byte, string> BoolErrMap
+            = new Dictionary<byte, string>()
+        {
+            {0x00,"#NULL!"},
+            {0x07,"#DIV/0"},
+            {0x0f,"#VALUE!"},
+            {0x17,"#REF!"},
+            {0x1d,"#NAME?"},
+            {0x24,"#NUM!"},
+            {0x2a,"#N/A"},
+        };
 
         public bool Error { get; private set; }
 
@@ -22,40 +33,9 @@ namespace SL.RExcel.XLS.Records
 
         private void SetBoolErrValue(byte boolErr)
         {
-            switch (boolErr)
-            {
-                case 0x00:
-                    Value = "#NULL!";
-                    break;
-
-                case 0x07:
-                    Value = "#DIV/0";
-                    break;
-
-                case 0x0f:
-                    Value = "#VALUE!";
-                    break;
-
-                case 0x17:
-                    Value = "#REF!";
-                    break;
-
-                case 0x1d:
-                    Value = "#NAME?";
-                    break;
-
-                case 0x24:
-                    Value = "#NUM!";
-                    break;
-
-                case 0x2a:
-                    Value = "#N/A";
-                    break;
-
-                default:
-                    Value = "";
-                    break;
-            }
+            string result = string.Empty;
+            BoolErrMap.TryGetValue(boolErr, out result);
+            Value = result;
         }
     }
 }

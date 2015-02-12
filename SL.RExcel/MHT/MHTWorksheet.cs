@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using System.Xml.Linq;
 
 namespace SL.RExcel.MHT
 {
@@ -24,7 +23,7 @@ namespace SL.RExcel.MHT
             Rows = new Dictionary<uint, IRow>();
             var element = GetXML(part);
             uint index = 0;
-            foreach (Match xrow in new Regex(TrReg,RegexOptions.IgnoreCase).Matches(element))
+            foreach (Match xrow in new Regex(TrReg, RegexOptions.IgnoreCase).Matches(element))
             {
                 if (!xrow.Success) continue;
                 var row = GetMHTRow(index);

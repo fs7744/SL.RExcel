@@ -1,12 +1,18 @@
 ﻿using ICSharpCode.SharpZipLib.Zip;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
 namespace SL.RExcel.XLSX
 {
-    public class UnZipper
+    public class UnZipper : IDisposable
     {
         private ZipFile m_ZipFile;
+
+        ~UnZipper()
+        {
+            Dispose(false);
+        }
 
         public UnZipper(Stream zipFileStream)
         {
@@ -27,6 +33,17 @@ namespace SL.RExcel.XLSX
                 names.Add(item.Name);
             }
             return names;
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            m_ZipFile = null;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }
