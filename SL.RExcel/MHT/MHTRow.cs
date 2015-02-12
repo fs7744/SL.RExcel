@@ -60,7 +60,7 @@ namespace SL.RExcel.MHT
             return Cells.Values.Select(i => (MHTCell)i).Where(i => i.RowSpan > 0);
         }
 
-        internal void AddCell(MHTCell cell)
+        public void AddCell(MHTCell cell)
         {
             if (!Cells.ContainsKey(cell.Index))
                 Cells.Add(cell.Index, cell);

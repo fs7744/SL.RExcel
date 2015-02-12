@@ -80,30 +80,61 @@ namespace SL.RExcel.XLS
             Worksheets = sheets.Select(i => new XLSSheet(i)).ToArray();
         }
 
-        private static void GetSheetRecords(List<SheetRecord> sheets, ref SstRecord sst, ref SheetRecord currentSheet, Record record)
+        private void GetSheetRecords(List<SheetRecord> sheets, ref SstRecord sst, ref SheetRecord currentSheet, Record record)
         {
-            if (record is SstRecord)
-                sst = record as SstRecord;
-            else if (record is BoundSheetRecord)
-                sheets.Add(new SheetRecord() { Sheet = record as BoundSheetRecord });
-            else if (record is IndexRecord)
+            SetSST(record, ref sst);
+            SetSheets(sheets, record);
+            currentSheet = SetIndex(sheets, currentSheet, record);
+            SetRow(currentSheet, record);
+            SetCell(currentSheet, record);
+            SetMergeCells(currentSheet, record);
+        }
+
+        private static void SetMergeCells(SheetRecord currentSheet, Record record)
+        {
+            if (record is MergeCellsRecord && currentSheet != null)
+            {
+                currentSheet.MergeCells.Add(record as MergeCellsRecord);
+            }
+        }
+
+        private static void SetCell(SheetRecord currentSheet, Record record)
+        {
+            if (record is CellRecord && currentSheet != null)
+            {
+                currentSheet.Cells.Add(record as CellRecord);
+            }
+        }
+
+        private static void SetRow(SheetRecord currentSheet, Record record)
+        {
+            if (record is RowRecord && currentSheet != null)
+            {
+                currentSheet.Rows.Add(record as RowRecord);
+            }
+        }
+
+        private static SheetRecord SetIndex(List<SheetRecord> sheets, SheetRecord currentSheet, Record record)
+        {
+            if (record is IndexRecord)
             {
                 currentSheet = sheets.FirstOrDefault(i => i.Index == null);
                 if (currentSheet != null)
                     currentSheet.Index = record as IndexRecord;
             }
-            else if (record is RowRecord && currentSheet != null)
-            {
-                currentSheet.Rows.Add(record as RowRecord);
-            }
-            else if (record is CellRecord && currentSheet != null)
-            {
-                currentSheet.Cells.Add(record as CellRecord);
-            }
-            else if (record is MergeCellsRecord && currentSheet != null)
-            {
-                currentSheet.MergeCells.Add(record as MergeCellsRecord);
-            }
+            return currentSheet;
+        }
+
+        private static void SetSheets(List<SheetRecord> sheets, Record record)
+        {
+            if (record is BoundSheetRecord)
+                sheets.Add(new SheetRecord() { Sheet = record as BoundSheetRecord });
+        }
+
+        private void SetSST(Record record, ref SstRecord sst)
+        {
+            if (record is SstRecord)
+                sst = record as SstRecord;
         }
 
         private Record GetRecord(BIFFData data, Stream stream)

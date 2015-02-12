@@ -58,9 +58,7 @@ namespace SL.RExcel.XLSX
         {
             for (uint i = mergeCell.FirstRow; i <= mergeCell.LastRow; i++)
             {
-                IRow row = null;
-                if (!Rows.TryGetValue(i, out row))
-                    Rows.Add(i, new XLSXRow());
+                IRow row = GetXLSXRow(i);
                 for (uint j = mergeCell.FirstCol; j <= mergeCell.LastCol; j++)
                 {
                     ICell cell = null;
@@ -71,6 +69,17 @@ namespace SL.RExcel.XLSX
                     }
                 }
             }
+        }
+
+        private IRow GetXLSXRow(uint i)
+        {
+            IRow row = null;
+            if (!Rows.TryGetValue(i, out row))
+            {
+                row = new XLSXRow();
+                Rows.Add(i, row);
+            }
+            return row;
         }
 
         private object GetFirstMergeCellValue(MergeCell mergeCell)

@@ -62,14 +62,13 @@ namespace SL.RExcel.XLSX
                 int count = 0;
                 var si = XLSXCommon.ExcelNamespace + XLSXCommon.XML_SI;
                 var t = XLSXCommon.ExcelNamespace + XLSXCommon.XML_T;
-                foreach (var item in sharedStrings.Descendants(si))
+
+                foreach (var items in sharedStrings.Descendants(si)
+                                        .Select(i => i.Descendants(t))
+                                        .Where(i => !i.IsEmpty()))
                 {
-                    var items = item.Descendants(t);
-                    if (!items.IsEmpty())
-                    {
-                        dic.Add(count.ToString(), string.Join("", items.Select(i => i.Value)));
-                        count++;
-                    }
+                    dic.Add(count.ToString(), string.Join("", items.Select(i => i.Value)));
+                    count++;
                 }
             }
             return dic;
