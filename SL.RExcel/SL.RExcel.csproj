@@ -63,6 +63,12 @@
   <ItemGroup>
     <Compile Include="ExcelHelper.cs" />
     <Compile Include="Helper.cs" />
+    <Compile Include="MHT\MHTCell.cs" />
+    <Compile Include="MHT\MHTRow.cs" />
+    <Compile Include="MHT\MHTWorkBook.cs" />
+    <Compile Include="MHT\MHTWorksheet.cs" />
+    <Compile Include="MHT\Multipart.cs" />
+    <Compile Include="MHT\Part.cs" />
     <Compile Include="XLSInterfaces.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="XLSX\UnZipper.cs" />

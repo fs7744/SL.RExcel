@@ -16,6 +16,7 @@ namespace SL.RExcel
             var list = new List<Func<Stream, IWorkBook>>()
             {
                 s => new XLSXWorkBook(s),
+                s => new MHT.MHTWorkBook(s),
                 s => new XMLWorkBook(s),
                 s => new XLSWorkBook(s)
             };

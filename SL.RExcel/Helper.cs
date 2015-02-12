@@ -59,5 +59,20 @@ namespace SL.RExcel
             var row = int.Parse(index.Replace(col, ""));
             return new int[2] { colInt, row };
         }
+
+        public static string NextFullLine(this StreamReader reader)
+        {
+            string result = string.Empty;
+            while (reader.IsNotEnd() && string.IsNullOrWhiteSpace(result))
+            {
+                result = reader.ReadLine();
+            }
+            return result;
+        }
+
+        public static bool IsNotEnd(this StreamReader reader)
+        {
+            return reader.BaseStream.Position < reader.BaseStream.Length;
+        }
     }
 }
