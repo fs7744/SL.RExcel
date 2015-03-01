@@ -37,7 +37,7 @@ namespace SL.RExcel.XLSX
                 foreach (var row in element.Descendants(XLSXCommon.ExcelNamespace + XLSXCommon.XML_Row))
                 {
                     var indexStr = row.Attribute(XLSXCommon.XML_R);
-                    var index = int.Parse(indexStr.Value);
+                    var index = int.Parse(indexStr.Value) - 1;
                     Rows.Add((uint)index, new XLSXRow(row, sharedStrings));
                 }
                 FillMergeCells(GetMergeCells(element));

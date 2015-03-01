@@ -10,6 +10,8 @@ namespace SL.RExcel.XML
             Index = ToUint(element.Attribute(XMLCommon.Index));
             if (Index == 0)
                 Index = index;
+            else
+                Index--;
             Value = element.HasElements ? element.Descendants(XMLCommon.Data).First().Value : string.Empty;
             MergeAcross = ToUint(element.Attribute(XMLCommon.MergeAcross));
             MergeDown = ToUint(element.Attribute(XMLCommon.MergeDown));

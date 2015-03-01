@@ -52,11 +52,11 @@ namespace SL.RExcel
             while (cols.Count > 0)
             {
                 var c = cols.Last();
-                colInt += ((int)c - 64) + step * 10;
+                colInt += ((int)c - 65) + step * 10;
                 cols.Remove(c);
                 step++;
             }
-            var row = int.Parse(index.Replace(col, ""));
+            var row = int.Parse(index.Replace(col, "")) - 1;
             return new int[2] { colInt, row };
         }
 
