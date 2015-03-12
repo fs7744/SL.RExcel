@@ -11,22 +11,25 @@ namespace SL.RExcel.MHT
         public static readonly Regex RowSpanReg = new Regex("rowspan=.+? ", RegexOptions.IgnoreCase);
         public static readonly Regex ColSpanReg = new Regex("colspan=.+? ", RegexOptions.IgnoreCase);
         public static readonly Regex SpanReg = new Regex("<span.+?>", RegexOptions.IgnoreCase);
+        public static readonly Regex BeginStyleReg = new Regex("<.+?>", RegexOptions.IgnoreCase);
+        public static readonly Regex EndStyleReg = new Regex("</.+?>", RegexOptions.IgnoreCase);
 
         public MHTCell(uint index, string element)
         {
             Index = index;
             if (!string.IsNullOrWhiteSpace(element))
             {
-                var value = HtmlDecode(GetValue(element, ValueReg));
+                var value = RemoveStyle(GetValue(element, ValueReg)).HtmlDecode();
                 Value = value.Replaces(GetValue(value, SpanReg), "</span>", "</td>", ">", Multipart.SignBlank);
                 ColSpan = ToUint(GetValue(element, ColSpanReg).Replaces("colspan=", " "));
                 RowSpan = ToUint(GetValue(element, RowSpanReg).Replaces("rowspan=", " "));
             }
         }
 
-        private string HtmlDecode(string value)
+        private string RemoveStyle(string element)
         {
-            return string.IsNullOrWhiteSpace(value) ? value : HttpUtility.HtmlDecode(value);
+            return string.IsNullOrWhiteSpace(element) ? element
+                : EndStyleReg.Replace(BeginStyleReg.Replace(element, string.Empty), string.Empty);
         }
 
         private string GetValue(string element, Regex reg)

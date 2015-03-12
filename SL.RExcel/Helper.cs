@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Windows.Browser;
 using System.Xml;
 using System.Xml.Linq;
 
@@ -84,6 +85,11 @@ namespace SL.RExcel
                 result = result.Replace(item, string.Empty);
             }
             return result;
+        }
+
+        public static string HtmlDecode(this string value)
+        {
+            return string.IsNullOrWhiteSpace(value) ? value : HttpUtility.HtmlDecode(value);
         }
     }
 }

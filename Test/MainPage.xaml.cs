@@ -1,4 +1,5 @@
 ﻿using SL.RExcel;
+using SL.RExcel.MHT;
 using System;
 using System.Text;
 using System.Windows;
@@ -29,7 +30,6 @@ namespace Test
                     txtShow.Text = ex.Message;
                     throw ex;
                 }
-                
             }
         }
 

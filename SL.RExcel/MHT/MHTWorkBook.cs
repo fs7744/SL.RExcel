@@ -56,7 +56,7 @@ namespace SL.RExcel.MHT
             var value = reg.Success ? reg.Value.Replace("HRef=", string.Empty)
                                             .Replace("\"", string.Empty)
                                     : string.Empty;
-            return new KeyValuePair<string, string>(key, value);
+            return new KeyValuePair<string, string>(key, value.HtmlDecode());
         }
 
         public IWorksheet GetSheetByName(string name)
