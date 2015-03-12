@@ -39,7 +39,7 @@ namespace SL.RExcel.MHT
         {
             foreach (var cell in cells)
             {
-                for (uint i = index + 1; i <= index + cell.RowSpan; i++)
+                for (uint i = index + 1; i < index + cell.RowSpan; i++)
                 {
                     var row = GetMHTRow(i);
                     row.AddCell(new MHTCell(cell.Index, cell.Value));
