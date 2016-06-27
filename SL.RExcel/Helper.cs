@@ -48,14 +48,10 @@ namespace SL.RExcel
         {
             var col = m_Reg.Matches(index)[0].Value;
             var cols = col.ToList();
-            int step = 0;
             int colInt = 0;
-            while (cols.Count > 0)
+            for (int i = cols.Count - 1, n = 0; i >= 0; i--, n++)
             {
-                var c = cols.Last();
-                colInt += ((int)c - 65) + step * 10;
-                cols.Remove(c);
-                step++;
+                colInt += ((int)cols[i] - 64) * (int)Math.Pow(26, n);
             }
             var row = int.Parse(index.Replace(col, "")) - 1;
             return new int[2] { colInt, row };
