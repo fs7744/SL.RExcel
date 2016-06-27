@@ -54,7 +54,7 @@ namespace SL.RExcel
                 colInt += ((int)cols[i] - 64) * (int)Math.Pow(26, n);
             }
             var row = int.Parse(index.Replace(col, "")) - 1;
-            return new int[2] { colInt, row };
+            return new int[2] { colInt - 1, row };
         }
 
         public static string NextFullLine(this StreamReader reader)
